@@ -28,22 +28,25 @@ public class Tienda {
 		productos.add(producto);
 	}
 
-	public Producto getVendible(String codigo) {
+	public Producto getVendible(String codigo) throws VendibleInexistenteException {
 		// TODO Auto-generated method stub
 		return buscarProductoPorCod(codigo);
 	}
 
-	private Producto buscarProductoPorCod(String codigo) {
+	private Producto buscarProductoPorCod(String codigo) throws VendibleInexistenteException {
 		// TODO Auto-generated method stub
 		for (Producto producto : productos) {
 			if (producto.getCodigo().equals(codigo)) {
 				return producto;
 			}
+			else {
+				throw new VendibleInexistenteException();
+			}
 		}
 		return null;
 	}
 
-	public Integer getStock(Producto producto) {
+	public Integer getStock(Producto producto) throws VendibleInexistenteException {
 		// TODO Auto-generated method stub
 		return buscarProductoPorCod(producto.getCodigo()).getStock();
 	}
@@ -53,15 +56,17 @@ public class Tienda {
 		clientes.add(cliente);
 	}
 
-	public Cliente getCliente(String cuitEjemplo) {
+	public Cliente getCliente(String cuitEjemplo) throws ClienteInexistenteException {
 		// TODO Auto-generated method stub
 		return buscarClientePorCuit(cuitEjemplo);
 	}
 
-	private Cliente buscarClientePorCuit(String cuitEjemplo) {
+	private Cliente buscarClientePorCuit(String cuitEjemplo) throws ClienteInexistenteException {
 		for (Cliente cliente : clientes) {
 			if (cliente.getCuit().equals(cuitEjemplo)) {
 				return cliente;
+			} else {
+				throw new ClienteInexistenteException();
 			}
 		}
 		return null;
@@ -72,16 +77,19 @@ public class Tienda {
 		vendedores.add(vendedor);
 	}
 
-	public Vendedor getVendedor(String dniEjemplo) {
+	public Vendedor getVendedor(String dniEjemplo) throws VendedorInexistenteException {
 		// TODO Auto-generated method stub
 		return buscarVendedorPorDni(dniEjemplo);
 	}
 
-	private Vendedor buscarVendedorPorDni(String dniEjemplo) {
+	private Vendedor buscarVendedorPorDni(String dniEjemplo) throws VendedorInexistenteException {
 		for (Vendedor vendedor : vendedores) {
 			if (vendedor.getDni().equals(dniEjemplo)) {
 				return vendedor;
-			}
+			} 
+			else {
+				throw new VendedorInexistenteException();
+			} 
 		}
 		return null;
 	}
@@ -103,13 +111,15 @@ public class Tienda {
 		
 	}
 
-	public void agregarProductoAVenta(String codigoVenta, Producto producto, Integer cantidadVendida) throws StockInsuficienteException {
+	public void agregarProductoAVenta(String codigoVenta, Producto producto, Integer cantidadVendida) throws StockInsuficienteException, VentaInexistenteException {
 		// TODO Auto-generated method stub
 		Venta ventaElegida = null;
 		for (Venta venta : ventas) {
 			if (venta.getCodigo().equals(codigoVenta)) {
 				ventaElegida = venta;
-			}
+			} else {
+				throw new VentaInexistenteException();
+			}  
 		}
 		
 		if (ventaElegida != null) {
