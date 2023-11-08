@@ -155,9 +155,29 @@ public class testTienda {
 		
 	}
 	
+	
 	@Test
-	public void queSePuedaeEstablecerElPorcentajeDeComisionDeUnVendedor() throws VentaInexistenteException, VendibleInexistenteException, StockInsuficienteException {
+	public void queSePuedaEstablecerElPorcentajeDeComisionDeUnVendedor() throws VentaInexistenteException, VendibleInexistenteException, StockInsuficienteException {
+		Tienda tienda = new Tienda("30123456780", "Tienda de ejemplo");
+		String cuitCliente = "30123456780";
+		Cliente cliente = new Cliente(cuitCliente, "Cliente de ejemplo");
+		tienda.agregarCliente(cliente);
+		String dniEjemplo = "12345678";
+		Vendedor vendedor = new Vendedor (dniEjemplo, "Vendedor de ejemplo");
+		Producto producto = new Producto("1", "Producto nuevo", 100d);
+		Integer stockInicial = 10;
+		tienda.agregarProducto(producto, stockInicial);
+		Venta ticket = new Venta("C-0001", cliente, vendedor);
+		tienda.agregarVenta(ticket);
+		Integer cantidadVendida = 5;
+		tienda.agregarProductoAVenta(ticket.getCodigo(), producto, cantidadVendida);
 		
+		Double montoTotal = ticket.darComisionAlVendedor();
+		Double montoEsperado = 50d; // seria el 10% de la venta que se hizo para el vendedor
+		
+		vendedor.setGananciaComision(montoTotal);
+		
+		assertEquals(montoEsperado, montoTotal);
 	}
 
 }

@@ -48,5 +48,15 @@ public class Venta {
 		serviciosCompra.add(servicio);
 		setPrecio(servicio.getPrecio());
 	}
-
+	
+	public double darComisionAlVendedor() {
+		
+		double totalComision = 0;
+		 
+		totalComision = 10*precio/100;
+		
+		vendedor.setGananciaComision(totalComision);
+		
+		return totalComision;
+	}
 }
