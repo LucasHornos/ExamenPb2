@@ -157,7 +157,7 @@ public class testTienda {
 	
 	
 	@Test
-	public void queSePuedaEstablecerElPorcentajeDeComisionDeUnVendedor() throws VentaInexistenteException, VendibleInexistenteException, StockInsuficienteException {
+	public void queSePuedaEstablecerElPorcentajeDeComisionDeUnVendedor() throws VendedorInexistenteException, VentaInexistenteException, VendibleInexistenteException, StockInsuficienteException {
 		Tienda tienda = new Tienda("30123456780", "Tienda de ejemplo");
 		String cuitCliente = "30123456780";
 		Cliente cliente = new Cliente(cuitCliente, "Cliente de ejemplo");
@@ -179,5 +179,46 @@ public class testTienda {
 		
 		assertEquals(montoEsperado, montoTotal);
 	}
-
+	
+	@Test
+	public void queSeCalculeElMontoTotalDeComisionesQueTieneUnVendedor() throws VendedorInexistenteException, VentaInexistenteException, VendibleInexistenteException, StockInsuficienteException {
+		Tienda tienda = new Tienda("30123456780", "Tienda de ejemplo");
+		String cuitCliente = "30123456780";
+		Cliente cliente = new Cliente(cuitCliente, "Cliente de ejemplo");
+		tienda.agregarCliente(cliente);
+		String dniEjemplo = "12345678";
+		Vendedor vendedor = new Vendedor (dniEjemplo, "Vendedor de ejemplo");
+		Producto producto = new Producto("1", "Producto nuevo", 100d);
+		Integer stockInicial = 10;
+		tienda.agregarProducto(producto, stockInicial);
+		Venta ticket = new Venta("C-0001", cliente, vendedor);
+		tienda.agregarVenta(ticket);
+		Integer cantidadVendida = 5;
+		
+		tienda.agregarProductoAVenta(ticket.getCodigo(), producto, cantidadVendida);
+		
+		String cuitCliente2 = "1233";
+		Cliente cliente2 = new Cliente(cuitCliente2, "Cliente de ejemplo");
+		
+		Producto producto2 = new Producto("2", "Coca", 150d);
+		Integer stockInicial2 = 10;
+		tienda.agregarProducto(producto2, stockInicial2);
+		Venta ticket2 = new Venta("C-0002", cliente2, vendedor);
+		tienda.agregarVenta(ticket2);
+		Integer cantidadVendida2 = 2;
+		
+		tienda.agregarProductoAVenta(ticket2.getCodigo(), producto2, cantidadVendida2);
+		
+		Double montoVenta1 = ticket.darComisionAlVendedor();
+		
+		Double montoVenta2 = ticket2.darComisionAlVendedor();
+		
+		Double montoFinal = montoVenta1 + montoVenta2; 
+		
+		Double montoEsperado = 80d; // seria el 10% por cada venta que se hizo para el vendedor
+		
+		montoFinal = vendedor.getGananciaComision();
+		
+		assertEquals(montoEsperado, montoFinal);
+	}
 }

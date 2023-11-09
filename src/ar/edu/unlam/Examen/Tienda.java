@@ -117,8 +117,6 @@ public class Tienda {
 		for (Venta venta : ventas) {
 			if (venta.getCodigo().equals(codigoVenta)) {
 				ventaElegida = venta;
-			} else {
-				throw new VentaInexistenteException();
 			}  
 		}
 		
